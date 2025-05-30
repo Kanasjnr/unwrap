@@ -14,6 +14,10 @@ async function main() {
   const network = await ethers.provider.getNetwork();
   const networkName = network.name === "unknown" ? "hardhat" : network.name;
 
+  // Get the deployer's address to use as fee collector
+  const [deployer] = await ethers.getSigners();
+  const feeCollectorAddress = await deployer.getAddress();
+
   // Select the appropriate cUSD address based on the network
   const cUSDAddress = cUSD_ADDRESSES[networkName as keyof typeof cUSD_ADDRESSES];
   if (!cUSDAddress) {
@@ -22,9 +26,10 @@ async function main() {
 
   console.log(`Deploying Unwrap contract on ${networkName}...`);
   console.log(`Using cUSD token address: ${cUSDAddress}`);
+  console.log(`Using fee collector address: ${feeCollectorAddress} (deployer)`);
 
   // Deploy the contract
-  const unwrap = await Unwrap.deploy(cUSDAddress);
+  const unwrap = await Unwrap.deploy(cUSDAddress, feeCollectorAddress);
   await unwrap.waitForDeployment();
 
   const address = await unwrap.getAddress();
@@ -40,7 +45,7 @@ async function main() {
     try {
       await run("verify:verify", {
         address: address,
-        constructorArguments: [cUSDAddress],
+        constructorArguments: [cUSDAddress, feeCollectorAddress],
       });
       console.log("Contract verified successfully");
     } catch (error) {

@@ -1,3 +1,5 @@
+'use client';
+
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -18,7 +20,7 @@ export default function Header() {
   }, []);
 
   return (
-    <Disclosure as="nav" className="bg-colors-primary border-b border-black">
+    <Disclosure as="nav" className="bg-colors-primary border-b border-black" data-header="main">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -41,16 +43,8 @@ export default function Header() {
                     src="/logo.svg"
                     width="24"
                     height="24"
-                    alt="Celo Logo"
+                    alt="Unwrap Logo"
                   />
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a
-                    href="#"
-                    className="inline-flex items-center border-b-2 border-black px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Home
-                  </a>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -67,16 +61,6 @@ export default function Header() {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 pt-2 pb-4">
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-black py-2 pl-3 pr-4 text-base font-medium text-black"
-              >
-                Home
-              </Disclosure.Button>
-              {/* Add here your custom menu elements */}
-            </div>
           </Disclosure.Panel>
         </>
       )}

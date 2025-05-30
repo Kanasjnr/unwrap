@@ -2,192 +2,107 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useWeb3 } from "@/contexts/useWeb3";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+
+import Link from "next/link";
 
 export default function Home() {
-    const {
-        address,
-        getUserAddress,
-        sendCUSD,
-        mintMinipayNFT,
-        getNFTs,
-        signTransaction,
-    } = useWeb3();
-
-    const [cUSDLoading, setCUSDLoading] = useState(false);
-    const [nftLoading, setNFTLoading] = useState(false);
-    const [signingLoading, setSigningLoading] = useState(false);
-    const [userOwnedNFTs, setUserOwnedNFTs] = useState<string[]>([]);
-    const [tx, setTx] = useState<any>(undefined);
-    const [amountToSend, setAmountToSend] = useState<string>("0.1");
-    const [messageSigned, setMessageSigned] = useState<boolean>(false); // State to track if a message was signed
-
-
-    useEffect(() => {
-        getUserAddress();
-    }, []);
-
-    useEffect(() => {
-        const getData = async () => {
-            const tokenURIs = await getNFTs();
-            setUserOwnedNFTs(tokenURIs);
-        };
-        if (address) {
-            getData();
-        }
-    }, [address]);
-
-    async function sendingCUSD() {
-        if (address) {
-            setSigningLoading(true);
-            try {
-                const tx = await sendCUSD(address, amountToSend);
-                setTx(tx);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setSigningLoading(false);
-            }
-        }
-    }
-
-    async function signMessage() {
-        setCUSDLoading(true);
-        try {
-            await signTransaction();
-            setMessageSigned(true);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setCUSDLoading(false);
-        }
-    }
-
-
-    async function mintNFT() {
-        setNFTLoading(true);
-        try {
-            const tx = await mintMinipayNFT();
-            const tokenURIs = await getNFTs();
-            setUserOwnedNFTs(tokenURIs);
-            setTx(tx);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setNFTLoading(false);
-        }
-    }
-
-
-
-    return (
-        <div className="flex flex-col justify-center items-center">
-            {!address && (
-                <div className="h1">Please install Metamask and connect.</div>
-            )}
-            {address && (
-                <div className="h1">
-                    There you go... a canvas for your next Minipay project!
-                </div>
-            )}
-
-            <a
-                href="https://faucet.celo.org/alfajores"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 mb-4 rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-                Get Test Tokens
-            </a>
-
-            {address && (
-                <>
-                    <div className="h2 text-center">
-                        Your address:{" "}
-                        <span className="font-bold text-sm">{address}</span>
-                    </div>
-                    {tx && (
-                        <p className="font-bold mt-4">
-                            Tx Completed:{" "}
-                            <a
-                                href={`https://alfajores.celoscan.io/tx/${tx.transactionHash}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline"
-                            >
-                                {tx.transactionHash.substring(0, 6)}...{tx.transactionHash.substring(tx.transactionHash.length - 6)}
-                            </a>
-                        </p>
-                    )}
-                    <div className="w-full px-3 mt-7">
-                        <Input
-                            type="number"
-                            value={amountToSend}
-                            onChange={(e) => setAmountToSend(e.target.value)}
-                            placeholder="Enter amount to send"
-                            className="border rounded-md px-3 py-2 w-full mb-3"
-                        ></Input>
-                        <Button
-                            loading={signingLoading}
-                            onClick={sendingCUSD}
-                            title={`Send ${amountToSend} cUSD to your own address`}
-                            widthFull
-                        />
-                    </div>
-
-                    <div className="w-full px-3 mt-6">
-                        <Button
-                            loading={cUSDLoading}
-                            onClick={signMessage}
-                            title="Sign a Message"
-                            widthFull
-                        />
-                    </div>
-
-                    {messageSigned && (
-                        <div className="mt-5 text-green-600 font-bold">
-                            Message signed successfully!
-                        </div>
-                    )}
-
-                    <div className="w-full px-3 mt-5">
-                        <Button
-                            loading={nftLoading}
-                            onClick={mintNFT}
-                            title="Mint Minipay NFT"
-                            widthFull
-                        />
-                    </div>
-
-                    {userOwnedNFTs.length > 0 ? (
-                        <div className="flex flex-col items-center justify-center w-full mt-7">
-                            <p className="font-bold">My NFTs</p>
-                            <div className="w-full grid grid-cols-2 gap-3 mt-3 px-2">
-                                {userOwnedNFTs.map((tokenURI, index) => (
-                                    <div
-                                        key={index}
-                                        className="p-2 border-[3px] border-colors-secondary rounded-xl"
-                                    >
-                                        <Image
-                                            alt="MINIPAY NFT"
-                                            src={tokenURI}
-                                            className="w-[160px] h-[200px] object-cover"
-                                            width={160}
-                                            height={200}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="mt-5">You do not have any NFTs yet</div>
-                    )}
-
-                </>
-            )}
+  return (
+    <main className="flex min-h-screen flex-col items-center">
+      {/* Hero Section */}
+      <section className="w-full bg-gradient-to-b from-primary/10 to-background py-20">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+              Gift Crypto with Ease
+            </h1>
+            <p className="mb-8 text-lg text-muted-foreground">
+              Create digital gift cards with cUSD and send them to anyone via
+              email. Perfect for birthdays, holidays, or any special occasion.
+            </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <Link href="/create">Create Gift Card</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <Link href="/redeem">Redeem Gift Card</Link>
+              </Button>
+            </div>
+          </div>
         </div>
-    );
+      </section>
+
+      {/* How It Works Section */}
+      <section className="w-full py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-12 text-center text-3xl font-bold">How It Works</h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="rounded-lg border p-6 text-center">
+              <div className="mb-4 text-4xl">🎁</div>
+              <h3 className="mb-2 text-xl font-semibold">Create</h3>
+              <p className="text-muted-foreground">
+                Choose an amount in cUSD and add a personal message
+              </p>
+            </div>
+            <div className="rounded-lg border p-6 text-center">
+              <div className="mb-4 text-4xl">📧</div>
+              <h3 className="mb-2 text-xl font-semibold">Send</h3>
+              <p className="text-muted-foreground">
+                Enter recipient's email and we'll send them a unique redemption
+                code
+              </p>
+            </div>
+            <div className="rounded-lg border p-6 text-center">
+              <div className="mb-4 text-4xl">💎</div>
+              <h3 className="mb-2 text-xl font-semibold">Redeem</h3>
+              <p className="text-muted-foreground">
+                Recipient enters the code to receive cUSD directly to their
+                wallet
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="w-full bg-muted/50 py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-12 text-center text-3xl font-bold">
+            Frequently Asked Questions
+          </h2>
+          <div className="mx-auto max-w-3xl space-y-6">
+            <div className="rounded-lg border bg-background p-6">
+              <h3 className="mb-2 text-xl font-semibold">What is cUSD?</h3>
+              <p className="text-muted-foreground">
+                cUSD is a stablecoin on the Celo blockchain, pegged to the US
+                Dollar. It's perfect for gift cards as its value remains stable.
+              </p>
+            </div>
+            <div className="rounded-lg border bg-background p-6">
+              <h3 className="mb-2 text-xl font-semibold">
+                How do I redeem a gift card?
+              </h3>
+              <p className="text-muted-foreground">
+                Click the "Redeem Gift Card" button above, connect your wallet,
+                and enter the redemption code from your email.
+              </p>
+            </div>
+            <div className="rounded-lg border bg-background p-6">
+              <h3 className="mb-2 text-xl font-semibold">
+                What wallets are supported?
+              </h3>
+              <p className="text-muted-foreground">
+                We support MetaMask, Valora, and other Celo-compatible wallets.
+                You'll need a wallet to create or redeem gift cards.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

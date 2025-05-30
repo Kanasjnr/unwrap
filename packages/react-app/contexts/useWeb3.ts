@@ -1,6 +1,6 @@
 import { useState } from "react";
-import StableTokenABI from "./cusd-abi.json";
-import MinipayNFTABI from "./minipay-nft.json";
+import StableTokenABI from "../abis/cusd-abi.json";
+import UnWrapABI from "../abis/unWrap.json";
 import {
     createPublicClient,
     createWalletClient,
@@ -9,6 +9,7 @@ import {
     http,
     parseEther,
     stringToHex,
+    keccak256,
 } from "viem";
 import { celoAlfajores } from "viem/chains";
 
@@ -18,7 +19,7 @@ const publicClient = createPublicClient({
 });
 
 const cUSDTokenAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"; // Testnet
-const MINIPAY_NFT_CONTRACT = "0xE8F4699baba6C86DA9729b1B0a1DA1Bd4136eFeF"; // Testnet
+const UNWRAP_CONTRACT = "0x349a3172D4D8e3fFdd96De7736F622442FF14A24."; // TODO: Add your deployed contract address here
 
 export const useWeb3 = () => {
     const [address, setAddress] = useState<string | null>(null);
@@ -42,7 +43,6 @@ export const useWeb3 = () => {
         });
 
         let [address] = await walletClient.getAddresses();
-
         const amountInWei = parseEther(amount);
 
         const tx = await walletClient.writeContract({
@@ -60,23 +60,36 @@ export const useWeb3 = () => {
         return receipt;
     };
 
-    const mintMinipayNFT = async () => {
+    const createGiftCard = async (code: string, amount: string) => {
         let walletClient = createWalletClient({
             transport: custom(window.ethereum),
             chain: celoAlfajores,
         });
 
         let [address] = await walletClient.getAddresses();
+        const amountInWei = parseEther(amount);
+        const codeHash = keccak256(stringToHex(code));
 
-        const tx = await walletClient.writeContract({
-            address: MINIPAY_NFT_CONTRACT,
-            abi: MinipayNFTABI.abi,
-            functionName: "safeMint",
+        // First approve the contract to spend cUSD
+        const approveTx = await walletClient.writeContract({
+            address: cUSDTokenAddress,
+            abi: StableTokenABI.abi,
+            functionName: "approve",
             account: address,
-            args: [
-                address,
-                "https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/sections/2023/hero-top/products/minipay/minipay__desktop@2x.a17626ddb042.webp",
-            ],
+            args: [UNWRAP_CONTRACT, amountInWei],
+        });
+
+        await publicClient.waitForTransactionReceipt({
+            hash: approveTx,
+        });
+
+        // Then create the gift card
+        const tx = await walletClient.writeContract({
+            address: UNWRAP_CONTRACT,
+            abi: UnWrapABI.abi,
+            functionName: "createGiftCard",
+            account: address,
+            args: [codeHash, amountInWei],
         });
 
         const receipt = await publicClient.waitForTransactionReceipt({
@@ -86,56 +99,72 @@ export const useWeb3 = () => {
         return receipt;
     };
 
-    const getNFTs = async () => {
-        let walletClient = createWalletClient({
-            transport: custom(window.ethereum),
-            chain: celoAlfajores,
-        });
-
-        const minipayNFTContract = getContract({
-            abi: MinipayNFTABI.abi,
-            address: MINIPAY_NFT_CONTRACT,
-            client: publicClient,
-        });
-
-        const [address] = await walletClient.getAddresses();
-        const nfts: any = await minipayNFTContract.read.getNFTsByAddress([
-            address,
-        ]);
-
-        let tokenURIs: string[] = [];
-
-        for (let i = 0; i < nfts.length; i++) {
-            const tokenURI: string = (await minipayNFTContract.read.tokenURI([
-                nfts[i],
-            ])) as string;
-            tokenURIs.push(tokenURI);
-        }
-        return tokenURIs;
-    };
-
-    const signTransaction = async () => {
+    const redeemGiftCard = async (code: string) => {
         let walletClient = createWalletClient({
             transport: custom(window.ethereum),
             chain: celoAlfajores,
         });
 
         let [address] = await walletClient.getAddresses();
+        const codeHash = keccak256(stringToHex(code));
 
-        const res = await walletClient.signMessage({
+        const tx = await walletClient.writeContract({
+            address: UNWRAP_CONTRACT,
+            abi: UnWrapABI.abi,
+            functionName: "redeemGiftCard",
             account: address,
-            message: stringToHex("Hello from Celo Composer MiniPay Template!"),
+            args: [codeHash],
         });
 
-        return res;
+        const receipt = await publicClient.waitForTransactionReceipt({
+            hash: tx,
+        });
+
+        return receipt;
+    };
+
+    const checkGiftCard = async (code: string) => {
+        const codeHash = keccak256(stringToHex(code));
+        
+        const unWrapContract = getContract({
+            abi: UnWrapABI.abi,
+            address: UNWRAP_CONTRACT,
+            client: publicClient,
+        });
+
+        const [valid, amount] = await unWrapContract.read.checkGiftCard([codeHash]);
+        return { valid, amount };
+    };
+
+    const getFeePercentage = async () => {
+        const unWrapContract = getContract({
+            abi: UnWrapABI.abi,
+            address: UNWRAP_CONTRACT,
+            client: publicClient,
+        });
+
+        return await unWrapContract.read.feePercentage();
+    };
+
+    const calculateFee = async (amount: string) => {
+        const unWrapContract = getContract({
+            abi: UnWrapABI.abi,
+            address: UNWRAP_CONTRACT,
+            client: publicClient,
+        });
+
+        const amountInWei = parseEther(amount);
+        return await unWrapContract.read.calculateFee([amountInWei]);
     };
 
     return {
         address,
         getUserAddress,
         sendCUSD,
-        mintMinipayNFT,
-        getNFTs,
-        signTransaction,
+        createGiftCard,
+        redeemGiftCard,
+        checkGiftCard,
+        getFeePercentage,
+        calculateFee,
     };
 };
