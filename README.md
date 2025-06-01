@@ -1,258 +1,334 @@
-<!-- TITLE -->
-<p align="center">
-  <img width="100px" src="https://github.com/celo-org/celo-composer/blob/main/images/readme/celo_isotype.svg" align="center" alt="Celo" />
- <h2 align="center">Celo Composer - MiniPay Template</h2>
- <p align="center">Build, deploy, and iterate quickly on decentralized applications using Celo for MiniPay.</p>
-</p>
-  <p align="center">
-    <a href="https://github.com/celo-org/celo-composer/graphs/stars">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/celo-org/celo-composer?color=FCFF52" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/graphs/contributors">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/pulls">
-      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://opensource.org/license/mit/">
-      <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-    </a>
-  </p>
-</p>
+# Unwrap
 
-<!-- TABLE OF CONTENTS -->
+<h2 align="center">Unwrap - Digital Gift Cards on Celo</h2>
+<p align="center">A decentralized platform for creating and redeeming digital gift cards using cUSD on the Celo network</p>
 
-<div>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-      <ol>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#minipay">MiniPay</a></li>
-     </ol>
-    <li><a href="#how-to-use-celo-composer">How to use Celo Composer</a></li>
-        <ol>
-          <li><a href="#install-dependencies">Install Dependencies</a></li>
-          <li><a href="#deploy-a-smart-contract">Deploy a Smart Contract</a></li>
-          <li><a href="#deploy-your-dapp-locally">Deploy your Dapp Locally</a></li>
-          <li><a href="#add-ui-components">Add UI Components</a></li>
-          <li><a href="#deploy-with-vercel">Deploy with Vercel</a></li>
-          <li><a href="#supported-frameworks">Supported Frameworks</a></li>
-        </ol>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#support">Support</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</div>
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Use Cases](#use-cases)
+- [Technical Architecture](#technical-architecture)
+- [Smart Contract System](#smart-contract-system)
+- [Frontend Implementation](#frontend-implementation)
+- [Security](#security)
+- [Getting Started](#getting-started)
+- [Development Guide](#development-guide)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
 
-<!-- ABOUT THE PROJECT -->
+## Overview
 
-## About The Project
+Unwrap is a decentralized gift card platform that revolutionizes the way people send and receive digital gifts using cryptocurrency. Built on the Celo network, it leverages the stability of cUSD (Celo Dollar) to provide a secure, private, and efficient way to send digital gift cards.
 
-Celo Composer allows you to quickly build, deploy, and iterate on decentralized applications using Celo. It provides a number of frameworks, templates, deployment and component support, and Celo specific functionality to help you get started with your next dApp. 
+### Core Concepts
 
-It is the perfect lightweight starter-kit for any hackathon and for quickly testing out integrations and deployments on Celo.
+1. **Digital Gift Cards**: Convert cUSD into redeemable gift cards with unique codes
+2. **Non-Custodial**: Users maintain full control of their funds until redemption
+3. **Privacy-Focused**: Gift card codes are hashed for security
+4. **Fee-Efficient**: Low 0.5% transaction fee structure
+5. **Mobile-First**: Optimized for mobile wallets, especially MiniPay
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+## Features
 
-## Built With
+### Gift Card Management
+- 🎁 Create gift cards with custom amounts
+- 🔑 Generate secure, unique redemption codes
+- 📊 Track gift card status (created, redeemed, expired)
+- 💰 Support for various cUSD amounts
+- 🔄 Batch gift card creation (coming soon)
 
-Celo Composer is built on Celo to make it simple to build dApps using a variety of front-end frameworks, and libraries.
+### Security & Privacy
+- 🔒 End-to-end encrypted redemption codes
+- 🔐 Non-custodial design
+- 🛡️ Reentrancy protection
+- 📝 Transparent transaction history
+- 🔍 Code verification system
 
-- [Celo](https://celo.org/)
-- [Solidity](https://docs.soliditylang.org/en/v0.8.19/)
-- [Hardhat](https://hardhat.org/)
-- [React.js](https://reactjs.org/)
-- [Next.js](https://nextjs.org/)
-- [viem](https://viem.sh/)
-- [Tailwind](https://tailwindcss.com/)
+### User Experience
+- 📱 Mobile-first interface
+- 🌐 Multi-wallet support (MiniPay, MetaMask, Valora)
+- ⚡ Fast transaction processing
+- 📊 Real-time status updates
+- 🎨 Intuitive design
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+### Technical Features
+- ⚡ Gas-optimized smart contracts
+- 🔄 Event-driven architecture
+- 📱 Progressive Web App (PWA) support
+- 🌐 Cross-browser compatibility
+- 📊 Comprehensive analytics
 
-<!-- GETTING STARTED -->
+## Use Cases
 
-## Prerequisites
+### Personal Gifting
+- Send birthday gifts in cUSD
+- Share holiday presents
+- Gift money for special occasions
+- Support family members
+- Educational gifts
 
-- Node (v20 or higher)
-- Git (v2.38 or higher)
+### Business Applications
+- Employee rewards
+- Customer loyalty programs
+- Gift card distribution
+- Event tickets
+- Promotional campaigns
 
-## MiniPay
+### Community Use
+- Community rewards
+- Event participation gifts
+- Educational incentives
+- Social impact initiatives
+- Community support
 
-Welcome to the [MiniPay](https://www.opera.com/products/minipay) wallet integration guide. MiniPay is one of the fastest growing wallets that was built out by Opera on Celo that seeks to create a simple user experience to use DApps. MiniPay is available as a standalone app and inside the Opera Mini browser on Android phones thereby allowing DApp developers to tap into a distribution of 100M users on integration.
+## Technical Architecture
 
-This guide provides information on how to develop and test your dapp for MiniPay.
+### Smart Contract System
 
-To get started with MiniPay, we recommend testing the wallet and building a sample dApp using our starter kit. The following steps will guide you through setting up MiniPay, building your dApp, and testing it in the wallet.
+#### Core Contract (`Unwrap.sol`)
+```solidity
+contract Unwrap is ReentrancyGuard {
+    // State Variables
+    IERC20 public cUSDToken;
+    uint256 public feePercentage;
+    address public feeCollector;
+    
+    // Data Structures
+    struct GiftCard {
+        uint256 amount;
+        address creator;
+        bool redeemed;
+        uint256 createdAt;
+        uint256 expiresAt;
+    }
+    
+    // Mappings
+    mapping(bytes32 => GiftCard) public giftCards;
+}
+```
 
-:::info
-Install the new [MiniPay standalone app](https://play.google.com/store/apps/details?id=com.opera.minipay) now! 🎉 📥
-:::
+#### Key Functions
+1. **Gift Card Creation**
+   - `createGiftCard(bytes32 _codeHash, uint256 _amount)`
+   - Handles token transfers
+   - Calculates and collects fees
+   - Emits creation events
 
-## How to use Celo Composer - MiniPay template
+2. **Gift Card Redemption**
+   - `redeemGiftCard(string calldata _code)`
+   - Verifies code validity
+   - Processes token transfer
+   - Updates card status
 
-The easiest way to start with Celo Composer is using `@celo/celo-composer`. This CLI tool lets you quickly start building dApps on Celo, including several templates. To get started, just run the following command, and follow the steps:
+3. **Administrative Functions**
+   - `updateFeePercentage(uint256 _newFeePercentage)`
+   - `updateFeeCollector(address _newFeeCollector)`
+   - `calculateFee(uint256 _amount)`
 
-- Step 1
+### Frontend Implementation
 
+#### Core Components
+1. **Wallet Integration**
+   - Web3 provider management
+   - Wallet connection handling
+   - Transaction signing
+   - Network detection
+
+2. **Gift Card Interface**
+   - Creation form
+   - Redemption interface
+   - Status tracking
+   - Transaction history
+
+3. **User Dashboard**
+   - Gift card management
+   - Transaction history
+   - Wallet balance
+   - Network status
+
+#### Technical Stack
+- **Framework**: Next.js
+- **State Management**: React Context + Hooks
+- **Styling**: Tailwind CSS
+- **Web3 Integration**: viem
+- **Testing**: Jest + React Testing Library
+
+## Security
+
+### Smart Contract Security
+1. **Access Control**
+   - Role-based permissions
+   - Fee collector management
+   - Emergency pause functionality
+
+2. **Transaction Safety**
+   - ReentrancyGuard implementation
+   - Secure token transfers
+   - Fee caps and limits
+
+3. **Code Security**
+   - Secure hashing of redemption codes
+   - Input validation
+   - Event emission for tracking
+
+### Frontend Security
+1. **Wallet Security**
+   - Secure connection handling
+   - Transaction signing
+   - Network validation
+
+2. **Data Protection**
+   - Local storage encryption
+   - Secure code generation
+   - Input sanitization
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v20 or higher)
+- Git
+- A Celo-compatible wallet
+- cUSD tokens for gift cards
+- CELO tokens for gas fees
+
+### Installation
+
+1. **Clone Repository**
 ```bash
-npx @celo/celo-composer@latest create
+git clone https://github.com/kanas/unwrap.git
+cd unwrap
 ```
 
-- Step 2: Provide the Project Name: You will be prompted to enter the name of your project.
-
-```text
-What is your project name: 
-```
-
-- Step 3: Choose to Use Hardhat: You will be asked if you want to use Hardhat. Select Yes or No.
-
-```text
-Do you want to use Hardhat? (Y/n)
-```
-
-- Step 4: Choose to Use a Template: You will be asked if you want to use a template. Select `Yes` .
-
-```text
-Do you want to use a template?
-```
-
-- Step 5: Select a Template: If you chose to use a template, you will be prompted to select `MiniPay` from the list provided.
-
-- Step 6: Provide the Project Owner's Name: You will be asked to enter the project owner's name.
-
-```text
-Project Owner name:
-```
-
-- Step 7: Wait for Project Creation: The CLI will now create the project based on your inputs. This may take a few minutes.
-
-- Step 8: Follow the instructions to start the project. The same will be displayed on the console after the project is created.
-
-```text
-🚀 Your starter project has been successfully created!
-```
-
-## Install Dependencies
-
-
-Once your custom dApp has been created, just install dependencies, either with yarn:
-
+2. **Install Dependencies**
 ```bash
-   yarn
+yarn install
 ```
 
-If you prefer npm, you can run:
-
+3. **Environment Setup**
 ```bash
-   npm install
+# Frontend
+cd packages/react-app
+cp .env.example .env
+# Add required environment variables
+
+# Smart Contracts
+cd packages/hardhat
+cp .env.example .env
+# Add private key and network configuration
 ```
 
-## Deploy a Smart Contract
-
-Find the detailed instructions on how to run your smart contract in [packages/hardhat/README.md](./packages/hardhat/README.md).
-
-For quick development follow these three steps:
-
-1. Change `packages/hardhat/env.template` to `packages/hardhat/env` and add your `PRIVATE_KEY` into the `.env` file.
-2. Make sure your wallet is funded when deploying to testnet or mainnet. You can get test tokens for deploying it on Alfajores from the [Celo Faucet](https://faucet.celo.org/alfajores).
-3. Run the following commands from the `packages/hardhat` folder to deploy your smart contract to the Celo Testnet Alfajores:
-
+4. **Start Development**
 ```bash
-npx hardhat ignition deploy ./ignition/modules/MiniPay.ts --network alfajores
+# Frontend
+yarn react-app:dev
+
+# Smart Contract Testing
+yarn hardhat test
 ```
 
-## Deploy your Dapp Locally
+## Development Guide
 
-Find the detailed instructions on how to run your frontend in the [`react-dapp` README.md](./packages/react-app/README.md).
+### Smart Contract Development
 
-Before you start the project, please follow these steps:
+1. **Contract Structure**
+   - `contracts/Unwrap.sol`: Main contract
+   - `contracts/mocks/`: Test mocks
+   - `test/`: Test files
 
-1. Rename the file:
-   packages/react-app/.env.template
-   to
-   packages/react-app/.env
-
-2. Open the newly renamed .env file and add your WalletConnect Cloud Project ID from [WalletConnect Cloud](https://cloud.walletconnect.com/)
-
-Once you've done that, you're all set to start your project!
-
-Run the following commands from the `packages/react-app` folder to start the project:
-
+2. **Testing**
 ```bash
-   yarn dev
+# Run all tests
+yarn hardhat test
+
+# Run specific test file
+yarn hardhat test test/Unwrap.test.js
+
+# Gas reporting
+yarn hardhat test --gas
 ```
 
-If you prefer npm, you can run:
-
+3. **Deployment**
 ```bash
-   npm run dev
+# Testnet
+yarn hardhat deploy --network alfajores
+
+# Mainnet
+yarn hardhat deploy --network celo
 ```
 
-Thank you for using Celo Composer! If you have any questions or need further assistance, please refer to the README or reach out to our team.
+### Frontend Development
 
-**_🔥Voila, you have a dApp ready to go. Start building your dApp on Celo._**
+1. **Component Structure**
+   - `components/`: Reusable UI components
+   - `hooks/`: Custom React hooks
+   - `pages/`: Next.js pages
+   - `utils/`: Utility functions
 
+2. **Development Commands**
+```bash
+# Start development server
+yarn react-app:dev
 
-## Add UI Components
+# Build for production
+yarn react-app:build
 
-To keep the Celo Composer as lightwieght as possible we didn't add any components but rather a guide on how to add the components you need yourself with a very simple to use components library. To learn how to add UI components using [ShadCN](https://ui.shadcn.com/) in this project, refer to the [UI Components Guide](./docs/UI_COMPONENTS.md).
+# Run tests
+yarn react-app:test
 
-## Deploy with Vercel
+# Lint code
+yarn react-app:lint
+```
 
-The Celo Composer is a great tool for hackathons and fast deployments. We created a guide for you, using the Vercel CLI to create a live deployment in minutes. For detailed instructions on deploying the Next.js app using Vercel CLI, refer to the [Deployment Guide](./docs/DEPLOYMENT_GUIDE.md).
+## Deployment
 
+### Smart Contract Deployment
 
-## Supported Frameworks
+1. **Preparation**
+   - Fund deployment wallet
+   - Verify network configuration
+   - Set environment variables
 
-### React / Nextjs
+2. **Deployment Process**
+   - Deploy to testnet first
+   - Verify contract
+   - Test functionality
+   - Deploy to mainnet
 
-- Support for Website and Progressive Web Application.
-- Works with all major crypto wallets.
+### Frontend Deployment
 
-Check [nextjs docs](https://nextjs.org/docs) to learn more about it.
+1. **Build Process**
+   - Optimize assets
+   - Generate static files
+   - Configure environment
 
-### Hardhat
-
-- Robust framework for building and testing smart contracts.
-- Compatible with various Ethereum development tools and plugins.
-
-Check [hardhat docs](https://hardhat.org/hardhat-runner/docs/getting-started) to learn more about it.
-
-## Support
-
-Join the Celo Discord server at <https://chat.celo.org>. Reach out on the dedicated repo channel [here](https://discord.com/channels/600834479145353243/941003424298856448).
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-See the [open issues](https://github.com/celo-org/celo-composer/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
+2. **Deployment Options**
+   - Vercel (recommended)
+   - IPFS
+   - Traditional hosting
 
 ## Contributing
 
-We welcome contributions from the community.
+1. **Development Process**
+   - Fork repository
+   - Create feature branch
+   - Write tests
+   - Submit PR
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+2. **Code Standards**
+   - Follow Solidity style guide
+   - Write comprehensive tests
+   - Document changes
+   - Update README
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-<!-- CONTACT -->
-## Contact
+## Support
 
-- [@CeloDevs](https://twitter.com/CeloDevs)
-- [Discord](https://discord.com/invite/celo)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+For support:
+- Open an issue in the GitHub repository
+- Contact the development team
+- Check the documentation
