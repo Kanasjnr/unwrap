@@ -10,8 +10,19 @@ import {
     parseEther,
     stringToHex,
     keccak256,
+    type Abi,
 } from "viem";
 import { celoAlfajores } from "viem/chains";
+
+// Define a type for the ABI
+type ContractABI = readonly {
+    inputs: readonly { internalType: string; name: string; type: string }[];
+    stateMutability: string;
+    type: string;
+    name?: string;
+    outputs?: readonly { internalType: string; name: string; type: string }[];
+    anonymous?: boolean;
+}[];
 
 const publicClient = createPublicClient({
     chain: celoAlfajores,
@@ -19,7 +30,7 @@ const publicClient = createPublicClient({
 });
 
 const cUSDTokenAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"; // Testnet
-const UNWRAP_CONTRACT = "0x349a3172D4D8e3fFdd96De7736F622442FF14A24."; // TODO: Add your deployed contract address here
+const UNWRAP_CONTRACT = "0x349a3172D4D8e3fFdd96De7736F622442FF14A24"; 
 
 export const useWeb3 = () => {
     const [address, setAddress] = useState<string | null>(null);
@@ -86,7 +97,7 @@ export const useWeb3 = () => {
         // Then create the gift card
         const tx = await walletClient.writeContract({
             address: UNWRAP_CONTRACT,
-            abi: UnWrapABI.abi,
+            abi: UnWrapABI as ContractABI,
             functionName: "createGiftCard",
             account: address,
             args: [codeHash, amountInWei],
@@ -110,7 +121,7 @@ export const useWeb3 = () => {
 
         const tx = await walletClient.writeContract({
             address: UNWRAP_CONTRACT,
-            abi: UnWrapABI.abi,
+            abi: UnWrapABI as ContractABI,
             functionName: "redeemGiftCard",
             account: address,
             args: [codeHash],
@@ -127,18 +138,19 @@ export const useWeb3 = () => {
         const codeHash = keccak256(stringToHex(code));
         
         const unWrapContract = getContract({
-            abi: UnWrapABI.abi,
+            abi: UnWrapABI as ContractABI,
             address: UNWRAP_CONTRACT,
             client: publicClient,
         });
 
-        const [valid, amount] = await unWrapContract.read.checkGiftCard([codeHash]);
+        const result = await unWrapContract.read.checkGiftCard([codeHash]) as [boolean, bigint];
+        const [valid, amount] = result;
         return { valid, amount };
     };
 
     const getFeePercentage = async () => {
         const unWrapContract = getContract({
-            abi: UnWrapABI.abi,
+            abi: UnWrapABI as ContractABI,
             address: UNWRAP_CONTRACT,
             client: publicClient,
         });
@@ -148,7 +160,7 @@ export const useWeb3 = () => {
 
     const calculateFee = async (amount: string) => {
         const unWrapContract = getContract({
-            abi: UnWrapABI.abi,
+            abi: UnWrapABI as ContractABI,
             address: UNWRAP_CONTRACT,
             client: publicClient,
         });

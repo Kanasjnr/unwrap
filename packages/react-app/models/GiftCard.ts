@@ -92,8 +92,6 @@ const giftCardSchema = new mongoose.Schema<IGiftCard>({
 });
 
 // Add indexes for common queries
-giftCardSchema.index({ redemptionCode: 1 });
-giftCardSchema.index({ codeHash: 1 });
 giftCardSchema.index({ recipientEmail: 1 });
 giftCardSchema.index({ status: 1 });
 giftCardSchema.index({ blockNumber: 1 });
